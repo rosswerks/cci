@@ -6,15 +6,13 @@ jobs:
       - image: circleci/python:2-jessie
     steps:
       - checkout
-      - run: 
-          name: Compile Code
-          command: |
-            mkdir output
-            echo "hello world" > output/message.txt
-       - persist_to_workspace:
-           root: output
-           paths:
-             - message.txt
+      - run: |
+          mkdir output
+          echo "hello world" > output/message.txt
+      - persist_to_workspace:
+          root: output
+          paths:
+           - message.txt
   testa:
     docker: 
       - image: circleci/python:2-jessie
@@ -42,6 +40,16 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - testa:
+          requires:
+            - build
+      - testb:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - testa
+            - testb
       - testa:
           requires:
             - build
