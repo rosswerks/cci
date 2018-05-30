@@ -3,4 +3,20 @@ version: 2
 jobs:
   build:
     docker:
-      -image:
+      -image: circleci/python:2-jessie
+    steps:
+      - checkout
+      - run: echo "hello world"    
+  test:
+    docker:
+      -image: circleci/python:2-jessie
+    steps:
+      - checkout
+      - run: echo "hello world"
+      
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
